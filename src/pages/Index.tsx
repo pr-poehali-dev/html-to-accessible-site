@@ -668,6 +668,9 @@ export default function Index() {
                 <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(253,186,116,0.45)" }}>
                   Разбор острого состояния, техники стабилизации, быстрая психологическая помощь.
                 </p>
+                <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(253,186,116,0.6)" }}>
+                  Если вам срочно требуется выговориться, нужна поддержка или хотите уточнить совет — я рядом.
+                </p>
 
                 <div className="space-y-3">
                   <div>
