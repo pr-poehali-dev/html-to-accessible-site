@@ -342,18 +342,7 @@ export default function Index() {
                   <Icon name="Send" size={16} />
                   Написать в Telegram
                 </a>
-                <a
-                  href="tel:+79085517030"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all hover:scale-105 active:scale-95"
-                  style={{
-                    background: "rgba(255,255,255,0.07)",
-                    border: "1px solid rgba(167,139,250,0.3)",
-                    color: "#e9d5ff",
-                  }}
-                >
-                  <Icon name="Phone" size={16} />
-                  +7 908 551-70-30
-                </a>
+
               </div>
 
 
@@ -879,7 +868,6 @@ export default function Index() {
             <div className="flex flex-wrap gap-3 justify-center mb-6">
               {[
                 { icon: "Mail", label: "Tatishelp@mail.ru", href: "mailto:Tatishelp@mail.ru" },
-                { icon: "Phone", label: "+7 908 551-70-30", href: "tel:+79085517030" },
                 { icon: "Send", label: "@tanii289", href: "https://t.me/tanii289" },
                 { icon: "Users", label: "vk.com/tanyshkasv", href: "https://vk.com/tanyshkasv" },
               ].map((c) => (
