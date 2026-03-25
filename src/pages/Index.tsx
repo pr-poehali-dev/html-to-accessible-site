@@ -299,29 +299,7 @@ export default function Index() {
                 </a>
               </div>
 
-              <div className="flex flex-wrap gap-8 mt-10 justify-center">
-                {[
-                  { n: "5+", label: "лет практики" },
-                  { n: "300+", label: "клиентов" },
-                  { n: "9–22", label: "каждый день" },
-                ].map((s) => (
-                  <div key={s.n} className="text-center">
-                    <div
-                      className="text-2xl font-bold"
-                      style={{
-                        background: "linear-gradient(135deg, #a78bfa, #ec4899)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                      }}
-                    >
-                      {s.n}
-                    </div>
-                    <div className="text-xs mt-0.5" style={{ color: "rgba(196,181,253,0.4)" }}>
-                      {s.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
+
             </div>
 
           </div>
