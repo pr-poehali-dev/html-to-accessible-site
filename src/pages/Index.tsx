@@ -1,6 +1,20 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
+interface Review {
+  id: number;
+  name: string;
+  text: string;
+  rating: number;
+  date: string;
+}
+
+const INITIAL_REVIEWS: Review[] = [
+  { id: 1, name: "Анна К.", text: "Татьяна помогла мне разобраться с тревожностью, которая мучила меня несколько лет. После 3 сессий стало значительно легче. Очень чуткий и профессиональный специалист!", rating: 5, date: "Март 2025" },
+  { id: 2, name: "Михаил Р.", text: "Делали матрицу совместимости с женой — это было невероятно точно и полезно. Многое стало понятно в наших отношениях. Рекомендую!", rating: 5, date: "Февраль 2025" },
+  { id: 3, name: "Елена В.", text: "Обратилась на SOS-консультацию в очень тяжёлый момент. Татьяна сразу успокоила и дала конкретные техники. Огромная благодарность!", rating: 5, date: "Январь 2025" },
+];
+
 
 interface FormData {
   request: string;
@@ -136,6 +150,31 @@ export default function Index() {
     full: { request: "", phone: "" },
     sos: { request: "", phone: "" },
   });
+  const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
+  const [reviewForm, setReviewForm] = useState({ name: "", text: "", rating: 5 });
+  const [activeNav, setActiveNav] = useState("consult");
+
+  const handleReviewSubmit = () => {
+    if (!reviewForm.name.trim() || !reviewForm.text.trim()) {
+      showToast("❌ Заполните имя и текст отзыва");
+      return;
+    }
+    const newReview: Review = {
+      id: Date.now(),
+      name: reviewForm.name.trim(),
+      text: reviewForm.text.trim(),
+      rating: reviewForm.rating,
+      date: new Date().toLocaleDateString("ru-RU", { month: "long", year: "numeric" }),
+    };
+    setReviews((prev) => [newReview, ...prev]);
+    setReviewForm({ name: "", text: "", rating: 5 });
+    showToast("✨ Спасибо за отзыв!");
+  };
+
+  const scrollTo = (id: string) => {
+    setActiveNav(id);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const showToast = (msg: string) => {
     setToast({ visible: true, message: msg });
@@ -257,6 +296,28 @@ export default function Index() {
                 Онлайн-консультации · Матрица судьбы
               </div>
 
+              {/* NAV TABS */}
+              <div className="flex flex-wrap gap-2 justify-center mb-8">
+                {[
+                  { id: "consult", label: "Консультации" },
+                  { id: "about", label: "Обо мне" },
+                  { id: "reviews", label: "Отзывы" },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => scrollTo(tab.id)}
+                    className="px-5 py-2 rounded-full text-sm font-medium transition-all hover:scale-105"
+                    style={
+                      activeNav === tab.id
+                        ? { background: "linear-gradient(135deg, #7c3aed, #ec4899)", color: "#fff" }
+                        : { background: "rgba(255,255,255,0.07)", border: "1px solid rgba(167,139,250,0.2)", color: "rgba(196,181,253,0.7)" }
+                    }
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
               <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-5 font-display">
                 Свитнева{" "}
                 <span
@@ -306,8 +367,61 @@ export default function Index() {
         </div>
       </section>
 
+      {/* ОБО МНЕ */}
+      <section id="about" className="py-14 px-5">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3"
+              style={{ background: "rgba(167,139,250,0.1)", border: "1px solid rgba(167,139,250,0.2)", color: "#c4b5fd" }}
+            >
+              🌿 Психолог
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white">Обо мне</h2>
+          </div>
+
+          <div
+            className="rounded-3xl p-8 md:p-10"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.15)" }}
+          >
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <p className="text-base leading-relaxed mb-4" style={{ color: "rgba(196,181,253,0.75)" }}>
+                  Меня зовут Татьяна. Я практикующий психолог и специалист по матрице судьбы. Работаю онлайн с людьми по всему миру.
+                </p>
+                <p className="text-base leading-relaxed mb-4" style={{ color: "rgba(196,181,253,0.65)" }}>
+                  В своей работе я сочетаю психологические техники и инструменты самопознания, чтобы помочь вам найти внутреннюю опору, разобраться в себе и своих отношениях, справиться с тревогой и выгоранием.
+                </p>
+                <p className="text-base leading-relaxed" style={{ color: "rgba(196,181,253,0.65)" }}>
+                  Каждый человек уникален — поэтому подход к каждому клиенту индивидуален. Я создаю безопасное пространство, где можно говорить открыто.
+                </p>
+              </div>
+              <div className="space-y-4">
+                {[
+                  { icon: "GraduationCap", text: "Образование в области психологии" },
+                  { icon: "Layers", text: "Специалист по матрице судьбы — 22 аркана" },
+                  { icon: "Globe", text: "Консультирую онлайн по всему миру" },
+                  { icon: "Clock", text: "Принимаю ежедневно с 9:00 до 22:00" },
+                  { icon: "ShieldCheck", text: "Полная конфиденциальность" },
+                ].map((item) => (
+                  <div key={item.text} className="flex items-center gap-3">
+                    <div
+                      className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: "linear-gradient(135deg, #7c3aed, #ec4899)" }}
+                    >
+                      <Icon name={item.icon as "GraduationCap"} size={16} className="text-white" />
+                    </div>
+                    <span className="text-sm" style={{ color: "rgba(196,181,253,0.7)" }}>{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* КОНСУЛЬТАЦИИ */}
-      <section className="py-14 px-5">
+      <section id="consult" className="py-14 px-5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <div
@@ -629,6 +743,118 @@ export default function Index() {
                   Ежедневно 9:00–22:00
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ОТЗЫВЫ */}
+      <section id="reviews" className="py-14 px-5">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3"
+              style={{ background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.2)", color: "#f9a8d4" }}
+            >
+              ⭐ Отзывы
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white">Отзывы клиентов</h2>
+            <p className="mt-2 text-sm" style={{ color: "rgba(196,181,253,0.5)" }}>Реальные истории реальных людей</p>
+          </div>
+
+          {/* Список отзывов */}
+          <div className="space-y-4 mb-10">
+            {reviews.map((r) => (
+              <div
+                key={r.id}
+                className="rounded-3xl p-6 transition-all hover:-translate-y-0.5"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.12)" }}
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                      style={{ background: "linear-gradient(135deg, #7c3aed, #ec4899)" }}
+                    >
+                      {r.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm">{r.name}</p>
+                      <p className="text-xs" style={{ color: "rgba(196,181,253,0.35)" }}>{r.date}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-0.5 flex-shrink-0">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} style={{ color: i < r.rating ? "#fbbf24" : "rgba(196,181,253,0.2)", fontSize: "14px" }}>★</span>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm leading-relaxed" style={{ color: "rgba(196,181,253,0.65)" }}>{r.text}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Форма написания отзыва */}
+          <div
+            className="rounded-3xl p-7"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(236,72,153,0.2)" }}
+          >
+            <h3 className="font-display text-xl font-bold text-white mb-5 flex items-center gap-2">
+              <Icon name="PenLine" size={20} className="text-pink-400" />
+              Оставить отзыв
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium mb-1.5" style={{ color: "rgba(196,181,253,0.5)" }}>
+                  Ваше имя *
+                </label>
+                <input
+                  type="text"
+                  className="w-full rounded-2xl px-4 py-3 text-sm outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(167,139,250,0.2)", color: "#e9d5ff" }}
+                  placeholder="Как вас зовут?"
+                  value={reviewForm.name}
+                  onChange={(e) => setReviewForm((p) => ({ ...p, name: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-2" style={{ color: "rgba(196,181,253,0.5)" }}>
+                  Оценка
+                </label>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setReviewForm((p) => ({ ...p, rating: star }))}
+                      className="text-2xl transition-all hover:scale-110"
+                      style={{ color: star <= reviewForm.rating ? "#fbbf24" : "rgba(196,181,253,0.2)" }}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1.5" style={{ color: "rgba(196,181,253,0.5)" }}>
+                  Ваш отзыв *
+                </label>
+                <textarea
+                  className="w-full rounded-2xl px-4 py-3 text-sm resize-none outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(167,139,250,0.2)", color: "#e9d5ff" }}
+                  rows={3}
+                  placeholder="Поделитесь своим опытом работы с Татьяной..."
+                  value={reviewForm.text}
+                  onChange={(e) => setReviewForm((p) => ({ ...p, text: e.target.value }))}
+                />
+              </div>
+              <button
+                className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                style={{ background: "linear-gradient(135deg, #ec4899, #7c3aed)" }}
+                onClick={handleReviewSubmit}
+              >
+                <Icon name="Send" size={16} />
+                Отправить отзыв
+              </button>
             </div>
           </div>
         </div>
