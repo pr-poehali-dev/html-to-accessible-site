@@ -9,11 +9,7 @@ interface Review {
   date: string;
 }
 
-const INITIAL_REVIEWS: Review[] = [
-  { id: 1, name: "Анна К.", text: "Татьяна помогла мне разобраться с тревожностью, которая мучила меня несколько лет. После 3 сессий стало значительно легче. Очень чуткий и профессиональный специалист!", rating: 5, date: "Март 2025" },
-  { id: 2, name: "Михаил Р.", text: "Делали матрицу совместимости с женой — это было невероятно точно и полезно. Многое стало понятно в наших отношениях. Рекомендую!", rating: 5, date: "Февраль 2025" },
-  { id: 3, name: "Елена В.", text: "Обратилась на SOS-консультацию в очень тяжёлый момент. Татьяна сразу успокоила и дала конкретные техники. Огромная благодарность!", rating: 5, date: "Январь 2025" },
-];
+const INITIAL_REVIEWS: Review[] = [];
 
 
 interface FormData {
@@ -759,40 +755,41 @@ export default function Index() {
               ⭐ Отзывы
             </div>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-white">Отзывы клиентов</h2>
-            <p className="mt-2 text-sm" style={{ color: "rgba(196,181,253,0.5)" }}>Реальные истории реальных людей</p>
           </div>
 
           {/* Список отзывов */}
-          <div className="space-y-4 mb-10">
-            {reviews.map((r) => (
-              <div
-                key={r.id}
-                className="rounded-3xl p-6 transition-all hover:-translate-y-0.5"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.12)" }}
-              >
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                      style={{ background: "linear-gradient(135deg, #7c3aed, #ec4899)" }}
-                    >
-                      {r.name.charAt(0)}
+          {reviews.length > 0 && (
+            <div className="space-y-4 mb-10">
+              {reviews.map((r) => (
+                <div
+                  key={r.id}
+                  className="rounded-3xl p-6 transition-all hover:-translate-y-0.5"
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.12)" }}
+                >
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                        style={{ background: "linear-gradient(135deg, #7c3aed, #ec4899)" }}
+                      >
+                        {r.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold text-sm">{r.name}</p>
+                        <p className="text-xs" style={{ color: "rgba(196,181,253,0.35)" }}>{r.date}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-white font-semibold text-sm">{r.name}</p>
-                      <p className="text-xs" style={{ color: "rgba(196,181,253,0.35)" }}>{r.date}</p>
+                    <div className="flex gap-0.5 flex-shrink-0">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <span key={i} style={{ color: i < r.rating ? "#fbbf24" : "rgba(196,181,253,0.2)", fontSize: "14px" }}>★</span>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex gap-0.5 flex-shrink-0">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <span key={i} style={{ color: i < r.rating ? "#fbbf24" : "rgba(196,181,253,0.2)", fontSize: "14px" }}>★</span>
-                    ))}
-                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: "rgba(196,181,253,0.65)" }}>{r.text}</p>
                 </div>
-                <p className="text-sm leading-relaxed" style={{ color: "rgba(196,181,253,0.65)" }}>{r.text}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Форма написания отзыва */}
           <div
