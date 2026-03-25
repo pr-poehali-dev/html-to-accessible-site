@@ -1,8 +1,6 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const PHOTO_URL =
-  "https://cdn.poehali.dev/projects/9adb9c61-5a10-47c6-b6f3-c07c12d06c4a/files/d3c3bfa6-a6b5-4ff9-b12c-bd060f4bb077.jpg";
 
 interface FormData {
   request: string;
@@ -244,9 +242,9 @@ export default function Index() {
           style={{ background: "radial-gradient(circle, #ec4899, transparent)" }}
         />
 
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="flex-1 text-center md:text-left">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex flex-col items-center text-center">
+            <div className="w-full">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6"
                 style={{
@@ -272,11 +270,11 @@ export default function Index() {
                 </span>
               </h1>
 
-              <p className="text-lg leading-relaxed mb-8 max-w-md" style={{ color: "rgba(196,181,253,0.65)" }}>
+              <p className="text-lg leading-relaxed mb-8 max-w-xl mx-auto" style={{ color: "rgba(196,181,253,0.65)" }}>
                 Практикующий психолог. Помогу найти внутренний баланс, опору и новые смыслы — онлайн по всему миру.
               </p>
 
-              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+              <div className="flex flex-wrap gap-3 justify-center">
                 <a
                   href="https://t.me/tanii289"
                   target="_blank"
@@ -301,7 +299,7 @@ export default function Index() {
                 </a>
               </div>
 
-              <div className="flex flex-wrap gap-8 mt-10 justify-center md:justify-start">
+              <div className="flex flex-wrap gap-8 mt-10 justify-center">
                 {[
                   { n: "5+", label: "лет практики" },
                   { n: "300+", label: "клиентов" },
@@ -326,26 +324,6 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Photo */}
-            <div className="relative flex-shrink-0">
-              <div
-                className="absolute inset-0 rounded-full blur-2xl opacity-40 scale-110"
-                style={{ background: "linear-gradient(135deg, #7c3aed, #ec4899)" }}
-              />
-              <div
-                className="relative rounded-full p-1"
-                style={{
-                  background: "linear-gradient(135deg, #7c3aed, #ec4899, #f97316)",
-                }}
-              >
-                <img
-                  src={PHOTO_URL}
-                  alt="Свитнева Татьяна — психолог"
-                  className="w-64 h-64 md:w-72 md:h-72 object-cover rounded-full"
-                  style={{ border: "4px solid #09041a" }}
-                />
-              </div>
-            </div>
           </div>
         </div>
       </section>
