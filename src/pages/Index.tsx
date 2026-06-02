@@ -208,8 +208,8 @@ export default function Index() {
       id: "primary",
       emoji: "✨",
       title: "Первичная консультация",
-      price: "750 ₽",
-      duration: "50 минут",
+      price: "900 ₽",
+      duration: "60 минут",
       desc: "Знакомство, запрос, диагностика. Определим направление для дальнейшей работы.",
       placeholder: "Тревожность, отношения, выгорание, самооценка...",
       type: "Консультация",
@@ -220,7 +220,7 @@ export default function Index() {
       id: "full",
       emoji: "🕊️",
       title: "Полноценная консультация",
-      price: "1 200 ₽",
+      price: "1 500 ₽",
       duration: "60 минут",
       desc: "Глубокая проработка запроса, психологические техники, поддержка и стратегия.",
       placeholder: "Что вас беспокоит? С чем пришли?",
@@ -234,10 +234,10 @@ export default function Index() {
     {
       id: "m1",
       icon: "Gem",
-      title: "Классическая матрица",
-      desc: "Расчёт по дате рождения: характер, предназначение, денежный канал, здоровье.",
+      title: "Матрица судьбы + карта здоровья",
+      desc: "Классический разбор по дате рождения: характер, предназначение, денежный канал, здоровье.",
       badge: "45–60 мин",
-      price: "1 800 ₽",
+      price: "2 000 ₽",
       from: "#f59e0b",
       to: "#f97316",
     },
@@ -246,18 +246,18 @@ export default function Index() {
       icon: "Heart",
       title: "Матрица совместимости",
       desc: "Анализ пары: сильные стороны, точки напряжения, кармические связи.",
-      badge: "50–70 мин",
-      price: "2 200 ₽",
+      badge: "50–120 мин",
+      price: "2 500 ₽",
       from: "#ec4899",
       to: "#f43f5e",
     },
     {
       id: "m3",
       icon: "Sparkles",
-      title: "Детская матрица",
+      title: "Детская матрица + карта здоровья",
       desc: "Раскрытие потенциала ребёнка, зоны развития и рекомендации для родителей.",
       badge: "40–50 мин",
-      price: "1 500 ₽",
+      price: "1 800 ₽",
       from: "#38bdf8",
       to: "#6366f1",
     },
@@ -652,7 +652,7 @@ export default function Index() {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  500 ₽
+                  700 ₽
                 </div>
                 <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(253,186,116,0.45)" }}>
                   Разбор острого состояния, техники стабилизации, быстрая психологическая помощь.
@@ -706,11 +706,11 @@ export default function Index() {
                     className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
                     style={{ background: "linear-gradient(135deg, #ea580c, #dc2626)" }}
                     onClick={() =>
-                      handleSubmit("sos", "SOS-консультация 30 минут", "500 ₽", "SOS срочная поддержка")
+                      handleSubmit("sos", "SOS-консультация 30 минут", "700 ₽", "SOS срочная поддержка")
                     }
                   >
                     <Icon name="Zap" size={16} />
-                    Нужна помощь сейчас · 500 ₽
+                    Нужна помощь сейчас · 700 ₽
                   </button>
                 </div>
               </div>
