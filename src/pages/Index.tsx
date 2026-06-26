@@ -85,9 +85,7 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
             <Icon name="CheckCheck" size={26} className="text-white" />
           </div>
           <h3 className="text-white text-xl font-bold font-display">{data.title}</h3>
-          <p className="text-purple-200 text-sm mt-1">
-            Скопируйте и отправьте мне удобным способом:
-          </p>
+
         </div>
         <div
           className="rounded-2xl p-4 mb-5 text-xs font-mono whitespace-pre-wrap break-words"
