@@ -32,28 +32,28 @@ function formatMessage(
   return `🔔 НОВАЯ ЗАЯВКА!\n\n📋 Услуга: ${service}\n💰 Стоимость: ${price}\n📞 Телефон: ${phone}\n📝 Запрос: ${request || "Не указан"}\n📌 Тип: ${type}\n⏰ Время: ${new Date().toLocaleString("ru-RU")}\n\nОтправлено с сайта TatisHelp`;
 }
 
-function PayButtons({ price }: { price: string }) {
+function PayButtons() {
   return (
-    <div className="mt-3 grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-2 gap-2">
       <a
         href="https://www.sberbank.com/ru/person/remittance/to-card?cardNumber=4279380635917513"
         target="_blank"
         rel="noreferrer"
-        className="flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-white text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+        className="flex items-center justify-center gap-1.5 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
         style={{ background: "linear-gradient(135deg, #1a9e3f, #16803a)" }}
       >
-        <Icon name="CreditCard" size={13} />
-        Сбер · {price}
+        <Icon name="CreditCard" size={14} />
+        Оплатить · Сбер
       </a>
       <a
         href="https://www.tinkoff.ru/cf/2200701093482815"
         target="_blank"
         rel="noreferrer"
-        className="flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-white text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+        className="flex items-center justify-center gap-1.5 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
         style={{ background: "linear-gradient(135deg, #f9a825, #e65100)" }}
       >
-        <Icon name="Zap" size={13} />
-        Т-Банк / СБП · {price}
+        <Icon name="Zap" size={14} />
+        Оплатить · Т-Банк
       </a>
     </div>
   );
@@ -529,15 +529,7 @@ export default function Index() {
                       onChange={(e) => updateForm(c.id, "phone", e.target.value)}
                     />
                   </div>
-                  <button
-                    className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
-                    style={{ background: `linear-gradient(135deg, ${c.from}, ${c.to})` }}
-                    onClick={() => handleSubmit(c.id, c.title, c.price, c.type)}
-                  >
-                    <Icon name="CalendarCheck" size={16} />
-                    Записаться за {c.price}
-                  </button>
-                  <PayButtons price={c.price} />
+                  <PayButtons />
                 </div>
               </div>
             ))}
@@ -609,23 +601,7 @@ export default function Index() {
                     {m.price}
                   </span>
                 </div>
-                <button
-                  className="w-full py-2.5 rounded-2xl text-white font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-                  style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
-                  onClick={() => {
-                    const msg = formatMessage(
-                      m.title,
-                      m.price,
-                      "—",
-                      "Нужна дата рождения (уточним в чате)",
-                      "Матрица судьбы"
-                    );
-                    setModal({ title: "✅ Заявка на матрицу!", message: msg });
-                  }}
-                >
-                  Записаться · {m.price}
-                </button>
-                <PayButtons price={m.price} />
+                <PayButtons />
               </div>
             ))}
           </div>
@@ -736,9 +712,9 @@ export default function Index() {
                     }
                   >
                     <Icon name="Zap" size={16} />
-                    Нужна помощь сейчас · 700 ₽
+                    Нужна помощь сейчас
                   </button>
-                  <PayButtons price="700 ₽" />
+                  <PayButtons />
                 </div>
               </div>
 
