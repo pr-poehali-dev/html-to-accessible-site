@@ -32,32 +32,6 @@ function formatMessage(
   return `🔔 НОВАЯ ЗАЯВКА!\n\n📋 Услуга: ${service}\n💰 Стоимость: ${price}\n📞 Телефон: ${phone}\n📝 Запрос: ${request || "Не указан"}\n📌 Тип: ${type}\n⏰ Время: ${new Date().toLocaleString("ru-RU")}\n\nОтправлено с сайта TatisHelp`;
 }
 
-function PayButtons() {
-  return (
-    <div className="grid grid-cols-2 gap-2">
-      <a
-        href="https://www.sberbank.com/ru/person/remittance/to-card?cardNumber=4279380635917513"
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center justify-center gap-1.5 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
-        style={{ background: "linear-gradient(135deg, #1a9e3f, #16803a)" }}
-      >
-        <Icon name="CreditCard" size={14} />
-        Оплатить · Сбер
-      </a>
-      <a
-        href="https://www.tinkoff.ru/cf/2200701093482815"
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center justify-center gap-1.5 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
-        style={{ background: "linear-gradient(135deg, #f9a825, #e65100)" }}
-      >
-        <Icon name="Zap" size={14} />
-        Оплатить · Т-Банк
-      </a>
-    </div>
-  );
-}
 
 function Toast({ message, visible }: { message: string; visible: boolean }) {
   return (
@@ -127,6 +101,30 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
         >
           {data.message}
         </div>
+        <p className="text-center text-xs text-purple-300 mb-3">Выберите способ оплаты:</p>
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <a
+            href="https://www.sberbank.com/ru/person/remittance/to-card?cardNumber=4279380635917513"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center justify-center gap-2 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg, #1a9e3f, #16803a)" }}
+          >
+            <Icon name="CreditCard" size={16} />
+            Сбербанк
+          </a>
+          <a
+            href="https://www.tinkoff.ru/cf/2200701093482815"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center justify-center gap-2 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg, #f9a825, #e65100)" }}
+          >
+            <Icon name="Zap" size={16} />
+            Т-Банк / СБП
+          </a>
+        </div>
+        <p className="text-center text-xs mb-3" style={{ color: "rgba(196,181,253,0.4)" }}>или напишите мне напрямую:</p>
         <div className="grid grid-cols-3 gap-3">
           <button
             onClick={handleCopy}
@@ -529,7 +527,14 @@ export default function Index() {
                       onChange={(e) => updateForm(c.id, "phone", e.target.value)}
                     />
                   </div>
-                  <PayButtons />
+                  <button
+                    className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+                    style={{ background: `linear-gradient(135deg, ${c.from}, ${c.to})` }}
+                    onClick={() => handleSubmit(c.id, c.title, c.price, c.type)}
+                  >
+                    <Icon name="CalendarCheck" size={16} />
+                    Записаться
+                  </button>
                 </div>
               </div>
             ))}
@@ -601,7 +606,17 @@ export default function Index() {
                     {m.price}
                   </span>
                 </div>
-                <PayButtons />
+                <button
+                  className="w-full py-2.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
+                  onClick={() => {
+                    const msg = formatMessage(m.title, m.price, "—", "Нужна дата рождения (уточним в чате)", "Матрица судьбы");
+                    setModal({ title: "✅ Заявка на матрицу!", message: msg });
+                  }}
+                >
+                  <Icon name="CalendarCheck" size={16} />
+                  Записаться
+                </button>
               </div>
             ))}
           </div>
@@ -714,7 +729,6 @@ export default function Index() {
                     <Icon name="Zap" size={16} />
                     Нужна помощь сейчас
                   </button>
-                  <PayButtons />
                 </div>
               </div>
 
