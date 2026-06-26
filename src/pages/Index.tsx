@@ -50,6 +50,7 @@ function Toast({ message, visible }: { message: string; visible: boolean }) {
 
 function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
+  const [paid, setPaid] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(data.message).then(() => {
@@ -100,11 +101,12 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
           {data.message}
         </div>
         <p className="text-center text-xs text-purple-300 mb-3">Оплатить через СБП (любой банк):</p>
-        <div className="mb-4">
+        <div className="mb-3">
           <a
             href="https://qr.nspk.ru/phone/79085517030"
             target="_blank"
             rel="noreferrer"
+            onClick={() => setTimeout(() => setPaid(true), 1500)}
             className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
             style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
           >
@@ -112,6 +114,20 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
             Оплатить через СБП
           </a>
         </div>
+        {paid && (
+          <div className="mb-4">
+            <a
+              href={`https://vk.com/tanyshkasv?text=${encodeURIComponent("✅ Я оплатил(а)!\n\n" + data.message)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] animate-pulse"
+              style={{ background: "linear-gradient(135deg, #4c75a3, #2a5298)", animationDuration: "2s" }}
+            >
+              <Icon name="CheckCheck" size={16} />
+              Я оплатил(а) — сообщить во ВКонтакте
+            </a>
+          </div>
+        )}
         <p className="text-center text-xs mb-3" style={{ color: "rgba(196,181,253,0.4)" }}>или напишите мне напрямую:</p>
         <div className="grid grid-cols-3 gap-3">
           <button
