@@ -101,27 +101,17 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
         >
           {data.message}
         </div>
-        <p className="text-center text-xs text-purple-300 mb-3">Выберите способ оплаты:</p>
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <p className="text-center text-xs text-purple-300 mb-3">Оплатить через СБП (любой банк):</p>
+        <div className="mb-4">
           <a
-            href="https://www.sberbank.com/ru/person/remittance/to-card?cardNumber=4279380635917513"
+            href="https://qr.nspk.ru/phone/79085517030"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-center gap-2 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
-            style={{ background: "linear-gradient(135deg, #1a9e3f, #16803a)" }}
+            className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
           >
-            <Icon name="CreditCard" size={16} />
-            Сбербанк
-          </a>
-          <a
-            href="https://www.tinkoff.ru/cf/2200701093482815"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-center gap-2 py-3 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
-            style={{ background: "linear-gradient(135deg, #f9a825, #e65100)" }}
-          >
-            <Icon name="Zap" size={16} />
-            Т-Банк / СБП
+            <Icon name="Smartphone" size={16} />
+            Оплатить через СБП
           </a>
         </div>
         <p className="text-center text-xs mb-3" style={{ color: "rgba(196,181,253,0.4)" }}>или напишите мне напрямую:</p>
