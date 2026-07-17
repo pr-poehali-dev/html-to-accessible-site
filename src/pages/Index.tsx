@@ -409,14 +409,14 @@ export default function Index() {
 
               <div className="flex flex-wrap gap-3 justify-center">
                 <a
-                  href="https://t.me/tanii289"
+                  href="https://vk.ru/tanyshkasv"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold text-sm transition-all hover:scale-105 active:scale-95 shadow-lg"
                   style={{ background: "linear-gradient(135deg, #7c3aed, #ec4899)" }}
                 >
-                  <Icon name="Send" size={16} />
-                  Написать в Telegram
+                  <Icon name="Heart" size={16} />
+                  Написать
                 </a>
 
               </div>
