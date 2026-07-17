@@ -52,11 +52,37 @@ function Toast({ message, visible }: { message: string; visible: boolean }) {
 function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
   const [paid, setPaid] = useState(false);
+  const [openCard, setOpenCard] = useState<"sber" | "tbank" | null>(null);
+  const [cardCopied, setCardCopied] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(data.message).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const markPaid = () => {
+    setTimeout(() => setPaid(true), 1500);
+    const cabinetToken = localStorage.getItem("cabinet_token");
+    if (cabinetToken) {
+      fetch("https://functions.poehali.dev/161ff20a-627d-4a64-b671-92b008d9e736", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Authorization": `Bearer ${cabinetToken}` },
+        body: JSON.stringify({ action: "add_star_self", reason: "Оплата на сайте" }),
+      }).catch(() => {});
+    }
+  };
+
+  const cards = {
+    sber: { number: "4279 3806 3591 7513", bank: "Сбер" },
+    tbank: { number: "2200 7010 9348 2815", bank: "Т-банк" },
+  };
+
+  const handleCopyCard = (number: string) => {
+    navigator.clipboard.writeText(number.replace(/\s/g, "")).then(() => {
+      setCardCopied(true);
+      setTimeout(() => setCardCopied(false), 2000);
     });
   };
 
@@ -101,29 +127,59 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
         >
           {data.message}
         </div>
-        <p className="text-center text-xs text-purple-300 mb-3">Оплатить через СБП (любой банк):</p>
-        <div className="mb-3">
-          <a
-            href="https://qr.nspk.ru/phone/79085517030"
-            target="_blank"
-            rel="noreferrer"
+        <p className="text-center text-xs text-purple-300 mb-3">Оплатить переводом на карту:</p>
+        <div className="mb-3 space-y-2">
+          <button
             onClick={() => {
-              setTimeout(() => setPaid(true), 1500);
-              const cabinetToken = localStorage.getItem("cabinet_token");
-              if (cabinetToken) {
-                fetch("https://functions.poehali.dev/161ff20a-627d-4a64-b671-92b008d9e736", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json", "X-Authorization": `Bearer ${cabinetToken}` },
-                  body: JSON.stringify({ action: "add_star_self", reason: "Оплата на сайте" }),
-                }).catch(() => {});
-              }
+              setOpenCard(openCard === "sber" ? null : "sber");
+              markPaid();
             }}
             className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
-            style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
+            style={{ background: "linear-gradient(135deg, #16a34a, #15803d)" }}
           >
-            <Icon name="Smartphone" size={16} />
-            Оплатить через СБП
-          </a>
+            <Icon name="CreditCard" size={16} />
+            Оплатить Сбер
+          </button>
+          {openCard === "sber" && (
+            <button
+              onClick={() => handleCopyCard(cards.sber.number)}
+              className="w-full rounded-2xl px-4 py-3 text-center transition-all hover:scale-[1.01] active:scale-[0.98]"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(167,139,250,0.2)" }}
+            >
+              <p className="text-white text-base font-mono tracking-wider">{cards.sber.number}</p>
+              <p className="text-xs mt-1" style={{ color: "rgba(196,181,253,0.5)" }}>Татьяна Дмитриевна С.</p>
+              <p className="text-xs mt-1 flex items-center justify-center gap-1" style={{ color: "rgba(196,181,253,0.4)" }}>
+                <Icon name={cardCopied ? "Check" : "Copy"} size={11} />
+                {cardCopied ? "Скопировано" : "Нажмите, чтобы скопировать"}
+              </p>
+            </button>
+          )}
+
+          <button
+            onClick={() => {
+              setOpenCard(openCard === "tbank" ? null : "tbank");
+              markPaid();
+            }}
+            className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a" }}
+          >
+            <Icon name="CreditCard" size={16} />
+            Оплатить Т-банк
+          </button>
+          {openCard === "tbank" && (
+            <button
+              onClick={() => handleCopyCard(cards.tbank.number)}
+              className="w-full rounded-2xl px-4 py-3 text-center transition-all hover:scale-[1.01] active:scale-[0.98]"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(167,139,250,0.2)" }}
+            >
+              <p className="text-white text-base font-mono tracking-wider">{cards.tbank.number}</p>
+              <p className="text-xs mt-1" style={{ color: "rgba(196,181,253,0.5)" }}>Татьяна Дмитриевна С.</p>
+              <p className="text-xs mt-1 flex items-center justify-center gap-1" style={{ color: "rgba(196,181,253,0.4)" }}>
+                <Icon name={cardCopied ? "Check" : "Copy"} size={11} />
+                {cardCopied ? "Скопировано" : "Нажмите, чтобы скопировать"}
+              </p>
+            </button>
+          )}
         </div>
         {paid && (
           <div className="mb-4">
