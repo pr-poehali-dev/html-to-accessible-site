@@ -428,6 +428,39 @@ export default function Index() {
         </div>
       </section>
 
+      {/* ПРИГЛАШЕНИЕ В КАБИНЕТ */}
+      <section className="px-5">
+        <div className="max-w-3xl mx-auto">
+          <a
+            href="/cabinet"
+            className="group flex items-center gap-4 rounded-3xl px-6 py-4 transition-all hover:scale-[1.01]"
+            style={{
+              background: "linear-gradient(135deg, rgba(250,204,21,0.08), rgba(236,72,153,0.08))",
+              border: "1px solid rgba(250,204,21,0.2)",
+            }}
+          >
+            <div
+              className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:rotate-12"
+              style={{ background: "linear-gradient(135deg, #facc15, #f97316)" }}
+            >
+              <Icon name="Star" size={20} className="text-white" style={{ fill: "#fff" }} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-white">Копите звёзды за визиты</p>
+              <p className="text-xs" style={{ color: "rgba(196,181,253,0.5)" }}>
+                5 звёзд — и следующая консультация бесплатно
+              </p>
+            </div>
+            <Icon
+              name="ChevronRight"
+              size={18}
+              className="flex-shrink-0 transition-transform group-hover:translate-x-1"
+              style={{ color: "rgba(253,224,71,0.6)" }}
+            />
+          </a>
+        </div>
+      </section>
+
       {/* ОБО МНЕ */}
       <section id="about" className="py-14 px-5">
         <div className="max-w-4xl mx-auto">
