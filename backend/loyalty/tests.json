@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Profile without token fails",
+      "method": "GET",
+      "path": "/?action=profile",
+      "expectedStatus": 401
+    },
+    {
+      "name": "Admin find without password fails",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "admin_find", "query": "test"},
+      "expectedStatus": 403
+    }
+  ]
+}

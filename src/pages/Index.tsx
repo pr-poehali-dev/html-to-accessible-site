@@ -107,7 +107,17 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
             href="https://qr.nspk.ru/phone/79085517030"
             target="_blank"
             rel="noreferrer"
-            onClick={() => setTimeout(() => setPaid(true), 1500)}
+            onClick={() => {
+              setTimeout(() => setPaid(true), 1500);
+              const cabinetToken = localStorage.getItem("cabinet_token");
+              if (cabinetToken) {
+                fetch("https://functions.poehali.dev/161ff20a-627d-4a64-b671-92b008d9e736", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json", "X-Authorization": `Bearer ${cabinetToken}` },
+                  body: JSON.stringify({ action: "add_star_self", reason: "Оплата на сайте" }),
+                }).catch(() => {});
+              }
+            }}
             className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
             style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
           >
@@ -370,6 +380,14 @@ export default function Index() {
                     {tab.label}
                   </button>
                 ))}
+                <a
+                  href="/cabinet"
+                  className="px-5 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 flex items-center gap-1.5"
+                  style={{ background: "rgba(250,204,21,0.1)", border: "1px solid rgba(250,204,21,0.3)", color: "#fde68a" }}
+                >
+                  <Icon name="Star" size={13} style={{ fill: "#fde68a" }} />
+                  Личный кабинет
+                </a>
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-5 font-display">

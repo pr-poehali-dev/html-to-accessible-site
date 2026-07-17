@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Register without password fails",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "register", "login_type": "phone", "phone": "+79991234567"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "Login unknown action",
+      "method": "POST",
+      "path": "/",
+      "body": {"action": "wrong"},
+      "expectedStatus": 400
+    }
+  ]
+}
