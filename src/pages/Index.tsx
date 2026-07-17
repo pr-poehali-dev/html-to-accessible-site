@@ -52,7 +52,7 @@ function Toast({ message, visible }: { message: string; visible: boolean }) {
 function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
   const [paid, setPaid] = useState(false);
-  const [openCard, setOpenCard] = useState<"sber" | "tbank" | null>(null);
+  const [openCard, setOpenCard] = useState<"sber" | "tbank" | "sbp" | null>(null);
   const [cardCopied, setCardCopied] = useState(false);
 
   const handleCopy = () => {
@@ -179,6 +179,30 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
                 {cardCopied ? "Скопировано" : "Нажмите, чтобы скопировать"}
               </p>
             </button>
+          )}
+
+          <button
+            onClick={() => {
+              if (openCard === "sbp") {
+                markPaid();
+                window.open("https://vk.com/tanyshkasv", "_blank", "noreferrer");
+              } else {
+                setOpenCard("sbp");
+              }
+            }}
+            className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
+          >
+            <Icon name="Smartphone" size={16} />
+            Нужно СБП
+          </button>
+          {openCard === "sbp" && (
+            <p
+              className="text-center text-xs px-4 py-3 rounded-2xl"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(167,139,250,0.2)", color: "rgba(196,181,253,0.6)" }}
+            >
+              Для перевода СБП нажми на меня ещё раз, данные будут предоставлены ВК)
+            </p>
           )}
         </div>
         {paid && (
