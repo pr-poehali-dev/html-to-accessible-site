@@ -33,6 +33,16 @@ function formatMessage(
   return `🔔 НОВАЯ ЗАЯВКА!\n\n📋 Услуга: ${service}\n💰 Стоимость: ${price}\n📞 Телефон: ${phone}\n📝 Запрос: ${request || "Не указан"}\n📌 Тип: ${type}\n⏰ Время: ${new Date().toLocaleString("ru-RU")}\n\nОтправлено с сайта TatisHelp`;
 }
 
+const NOTIFY_URL = "https://functions.poehali.dev/345d327f-7168-497c-a6ac-34d1731b5dbf";
+
+function notifyAdmin(message: string) {
+  fetch(NOTIFY_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message }),
+  }).catch(() => {});
+}
+
 
 function Toast({ message, visible }: { message: string; visible: boolean }) {
   return (
@@ -62,7 +72,7 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
     });
   };
 
-  const markPaid = () => {
+  const markPaid = (method: string) => {
     setTimeout(() => setPaid(true), 1500);
     const cabinetToken = localStorage.getItem("cabinet_token");
     if (cabinetToken) {
@@ -72,6 +82,7 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
         body: JSON.stringify({ action: "add_star_self", reason: "Оплата на сайте" }),
       }).catch(() => {});
     }
+    notifyAdmin(`💳 Клиент отметил оплату!\n\nСпособ: ${method}\n📋 Заявка: ${data.message}\n⏰ Время: ${new Date().toLocaleString("ru-RU")}`);
   };
 
   const cards = {
@@ -132,7 +143,7 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
           <button
             onClick={() => {
               setOpenCard(openCard === "sber" ? null : "sber");
-              markPaid();
+              markPaid("Сбер (карта)");
             }}
             className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
             style={{ background: "linear-gradient(135deg, #16a34a, #15803d)" }}
@@ -158,7 +169,7 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
           <button
             onClick={() => {
               setOpenCard(openCard === "tbank" ? null : "tbank");
-              markPaid();
+              markPaid("Т-банк (карта)");
             }}
             className="flex items-center justify-center gap-2 py-3 w-full rounded-2xl text-white text-sm font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
             style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a" }}
@@ -184,7 +195,7 @@ function Modal({ data, onClose }: { data: ModalData; onClose: () => void }) {
           <button
             onClick={() => {
               if (openCard === "sbp") {
-                markPaid();
+                markPaid("СБП (через ВКонтакте)");
                 window.open("https://vk.com/tanyshkasv", "_blank", "noreferrer");
               } else {
                 setOpenCard("sbp");
@@ -338,6 +349,7 @@ export default function Index() {
     }
     const msg = formatMessage(serviceName, price, form.phone, form.request, type);
     setModal({ title: "✅ Заявка готова!", message: msg });
+    notifyAdmin(msg);
     setForms((prev) => ({
       ...prev,
       [serviceId]: { request: "", phone: "" },
@@ -839,6 +851,7 @@ export default function Index() {
                   onClick={() => {
                     const msg = formatMessage(m.title, getPrice(m.price), "—", "Нужна дата рождения (уточним в чате)", "Матрица судьбы");
                     setModal({ title: "✅ Заявка на матрицу!", message: msg });
+                    notifyAdmin(msg);
                   }}
                 >
                   <Icon name="CalendarCheck" size={16} />
