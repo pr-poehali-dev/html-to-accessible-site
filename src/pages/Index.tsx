@@ -747,7 +747,7 @@ export default function Index() {
                   <Icon name="Headphones" size={44} className="text-red-400" />
                 </div>
                 <p className="text-xs" style={{ color: "rgba(253,186,116,0.4)" }}>
-                  Видео, аудио или чат
+                  Аудио или чат
                   <br />
                   Ежедневно 9:00–22:00
                 </p>
