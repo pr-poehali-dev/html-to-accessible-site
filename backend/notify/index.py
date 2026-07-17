@@ -27,6 +27,21 @@ def send_telegram_message(text: str):
 
 
 def handler(event: dict, context) -> dict:
+    if (event.get('queryStringParameters') or {}).get('debug') == '1':
+        token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+        chat_id = os.environ.get('TELEGRAM_CHAT_ID', '')
+        url = f'https://api.telegram.org/bot{token}/getMe'
+        try:
+            with urllib.request.urlopen(url, timeout=10) as resp:
+                me = json.loads(resp.read().decode('utf-8'))
+        except Exception as e:
+            me = {'error': str(e)}
+        return {
+            'statusCode': 200,
+            'headers': CORS_HEADERS,
+            'body': json.dumps({'bot_info': me, 'configured_chat_id': chat_id, 'token_prefix': token[:10]}),
+        }
+
     '''Отправляет уведомление в Telegram администратору о новой заявке или оплате с сайта.'''
     method = event.get('httpMethod', 'GET')
 
@@ -57,3 +72,4 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 502, 'headers': CORS_HEADERS, 'body': json.dumps({'error': f'Не удалось отправить: {detail}'})}
 
     return {'statusCode': 200, 'headers': CORS_HEADERS, 'body': json.dumps({'ok': True})}
+# refresh 1784328557
