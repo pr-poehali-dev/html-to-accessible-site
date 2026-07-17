@@ -1,4 +1,5 @@
 import { useState } from "react";
+import confetti from "canvas-confetti";
 import Icon from "@/components/ui/icon";
 
 interface Review {
@@ -188,6 +189,12 @@ export default function Index() {
     if (promoCode.trim().toUpperCase() === PROMO_CODE) {
       setPromoApplied(true);
       showToast("🎉 Промокод активирован! Скидка 15%");
+      confetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.6 },
+        colors: ["#7c3aed", "#ec4899", "#f59e0b", "#38bdf8"],
+      });
     } else {
       setPromoApplied(false);
       showToast("❌ Промокод не найден");
@@ -551,15 +558,22 @@ export default function Index() {
                       <span className="text-xs">{c.duration}</span>
                     </div>
                   </div>
-                  <div
-                    className="text-xl font-black"
-                    style={{
-                      background: `linear-gradient(135deg, ${c.from}, ${c.to})`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    {getPrice(c.price)}
+                  <div className="text-right">
+                    {promoApplied && (
+                      <div className="text-xs line-through" style={{ color: "rgba(196,181,253,0.35)" }}>
+                        {c.price}
+                      </div>
+                    )}
+                    <div
+                      className="text-xl font-black"
+                      style={{
+                        background: `linear-gradient(135deg, ${c.from}, ${c.to})`,
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      {getPrice(c.price)}
+                    </div>
                   </div>
                 </div>
 
@@ -670,15 +684,22 @@ export default function Index() {
                     <Icon name="Clock" size={11} />
                     {m.badge}
                   </span>
-                  <span
-                    className="text-lg font-black"
-                    style={{
-                      background: `linear-gradient(135deg, ${m.from}, ${m.to})`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                    }}
-                  >
-                    {getPrice(m.price)}
+                  <span className="text-right">
+                    {promoApplied && (
+                      <span className="block text-xs line-through" style={{ color: "rgba(196,181,253,0.35)" }}>
+                        {m.price}
+                      </span>
+                    )}
+                    <span
+                      className="text-lg font-black"
+                      style={{
+                        background: `linear-gradient(135deg, ${m.from}, ${m.to})`,
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      {getPrice(m.price)}
+                    </span>
                   </span>
                 </div>
                 <button
@@ -739,15 +760,22 @@ export default function Index() {
                 <p className="text-sm mb-1" style={{ color: "rgba(253,186,116,0.5)" }}>
                   30 минут · без очереди · здесь и сейчас
                 </p>
-                <div
-                  className="text-4xl font-black my-4"
-                  style={{
-                    background: "linear-gradient(135deg, #fb923c, #ef4444)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {getPrice("700 ₽")}
+                <div className="flex items-baseline gap-3 my-4">
+                  {promoApplied && (
+                    <span className="text-lg line-through" style={{ color: "rgba(253,186,116,0.35)" }}>
+                      700 ₽
+                    </span>
+                  )}
+                  <div
+                    className="text-4xl font-black"
+                    style={{
+                      background: "linear-gradient(135deg, #fb923c, #ef4444)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    {getPrice("700 ₽")}
+                  </div>
                 </div>
                 <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(253,186,116,0.6)" }}>
                   Паника, тревога, ощущение, что вы на грани? Не надо терпеть. 30 минут здесь и сейчас. Без очереди. Разберём, что делать.
