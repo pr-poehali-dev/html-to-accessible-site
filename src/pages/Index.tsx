@@ -178,6 +178,28 @@ export default function Index() {
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
   const [reviewForm, setReviewForm] = useState({ name: "", text: "", rating: 5 });
   const [activeNav, setActiveNav] = useState("consult");
+  const [promoCode, setPromoCode] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
+
+  const PROMO_CODE = "HAPPY15";
+  const PROMO_DISCOUNT = 0.15;
+
+  const applyPromo = () => {
+    if (promoCode.trim().toUpperCase() === PROMO_CODE) {
+      setPromoApplied(true);
+      showToast("🎉 Промокод активирован! Скидка 15%");
+    } else {
+      setPromoApplied(false);
+      showToast("❌ Промокод не найден");
+    }
+  };
+
+  const getPrice = (priceStr: string) => {
+    if (!promoApplied) return priceStr;
+    const num = parseInt(priceStr.replace(/\D/g, ""), 10);
+    const discounted = Math.round(num * (1 - PROMO_DISCOUNT));
+    return `${discounted.toLocaleString("ru-RU")} ₽`;
+  };
 
   const handleReviewSubmit = () => {
     if (!reviewForm.name.trim() || !reviewForm.text.trim()) {
@@ -434,6 +456,55 @@ export default function Index() {
         </div>
       </section>
 
+      {/* ПРОМОКОД */}
+      <section className="pt-10 px-5">
+        <div className="max-w-md mx-auto">
+          <div
+            className="rounded-3xl p-6"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(167,139,250,0.15)",
+            }}
+          >
+            <label className="block text-xs font-medium mb-1.5" style={{ color: "rgba(196,181,253,0.5)" }}>
+              🎟️ Промокод
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                className="flex-1 rounded-2xl px-4 py-3 text-sm outline-none transition-all uppercase"
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: promoApplied
+                    ? "1px solid rgba(74,222,128,0.5)"
+                    : "1px solid rgba(167,139,250,0.2)",
+                  color: "#e9d5ff",
+                }}
+                placeholder="Введите промокод"
+                value={promoCode}
+                onChange={(e) => {
+                  setPromoCode(e.target.value);
+                  if (promoApplied) setPromoApplied(false);
+                }}
+              />
+              <button
+                onClick={applyPromo}
+                className="px-5 rounded-2xl text-white font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+                style={{ background: "linear-gradient(135deg, #7c3aed, #ec4899)" }}
+              >
+                Применить
+              </button>
+            </div>
+            {promoApplied && (
+              <p className="text-xs mt-2 text-green-400 flex items-center gap-1">
+                <Icon name="CheckCheck" size={12} />
+                Скидка 15% применена ко всем ценам
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* КОНСУЛЬТАЦИИ */}
       <section id="consult" className="py-14 px-5">
         <div className="max-w-6xl mx-auto">
@@ -488,7 +559,7 @@ export default function Index() {
                       WebkitTextFillColor: "transparent",
                     }}
                   >
-                    {c.price}
+                    {getPrice(c.price)}
                   </div>
                 </div>
 
@@ -534,7 +605,7 @@ export default function Index() {
                   <button
                     className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
                     style={{ background: `linear-gradient(135deg, ${c.from}, ${c.to})` }}
-                    onClick={() => handleSubmit(c.id, c.title, c.price, c.type)}
+                    onClick={() => handleSubmit(c.id, c.title, getPrice(c.price), c.type)}
                   >
                     <Icon name="CalendarCheck" size={16} />
                     Записаться
@@ -607,14 +678,14 @@ export default function Index() {
                       WebkitTextFillColor: "transparent",
                     }}
                   >
-                    {m.price}
+                    {getPrice(m.price)}
                   </span>
                 </div>
                 <button
                   className="w-full py-2.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
                   style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
                   onClick={() => {
-                    const msg = formatMessage(m.title, m.price, "—", "Нужна дата рождения (уточним в чате)", "Матрица судьбы");
+                    const msg = formatMessage(m.title, getPrice(m.price), "—", "Нужна дата рождения (уточним в чате)", "Матрица судьбы");
                     setModal({ title: "✅ Заявка на матрицу!", message: msg });
                   }}
                 >
@@ -676,7 +747,7 @@ export default function Index() {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  700 ₽
+                  {getPrice("700 ₽")}
                 </div>
                 <p className="text-sm mb-6 leading-relaxed" style={{ color: "rgba(253,186,116,0.6)" }}>
                   Паника, тревога, ощущение, что вы на грани? Не надо терпеть. 30 минут здесь и сейчас. Без очереди. Разберём, что делать.
@@ -727,7 +798,7 @@ export default function Index() {
                     className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
                     style={{ background: "linear-gradient(135deg, #ea580c, #dc2626)" }}
                     onClick={() =>
-                      handleSubmit("sos", "SOS-консультация 30 минут", "700 ₽", "SOS срочная поддержка")
+                      handleSubmit("sos", "SOS-консультация 30 минут", getPrice("700 ₽"), "SOS срочная поддержка")
                     }
                   >
                     <Icon name="Zap" size={16} />
