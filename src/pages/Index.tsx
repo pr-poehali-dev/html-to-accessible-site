@@ -1021,29 +1021,22 @@ export default function Index() {
               <p className="text-sm mb-3" style={{ color: "rgba(196,181,253,0.5)" }}>
                 Короткий персональный разбор. Мах 5 вопросов
               </p>
-              <span className="inline-flex items-baseline gap-2">
-                {promoApplied && (
-                  <span className="text-sm line-through" style={{ color: "rgba(196,181,253,0.35)" }}>
-                    350 ₽
-                  </span>
-                )}
-                <span
-                  className="text-2xl font-black"
-                  style={{
-                    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {getPrice("350 ₽")}
-                </span>
+              <span
+                className="text-2xl font-black"
+                style={{
+                  background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                350 ₽
               </span>
             </div>
             <button
               className="w-full md:w-auto px-6 py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] flex-shrink-0"
               style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}
               onClick={() => {
-                const msg = formatMessage("🧿 Secrets", getPrice("350 ₽"), "—", "Нужны детали (уточним в чате)", "Secrets");
+                const msg = formatMessage("🧿 Secrets", "350 ₽", "—", "Нужны детали (уточним в чате)", "Secrets");
                 setModal({ title: "✅ Заявка на Secrets!", message: msg });
                 notifyAdmin(msg);
               }}
