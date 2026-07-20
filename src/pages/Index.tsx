@@ -774,103 +774,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* МАТРИЦА СУДЬБЫ */}
-      <section className="py-14 px-5">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3"
-              style={{
-                background: "rgba(251,191,36,0.1)",
-                border: "1px solid rgba(251,191,36,0.2)",
-                color: "#fcd34d",
-              }}
-            >
-              🔮 Нумерология
-            </div>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white">
-              Матрица судьбы
-            </h2>
-            <p className="mt-2 text-sm" style={{ color: "rgba(196,181,253,0.5)" }}>
-              22 аркана раскроют ваши таланты, ресурсы и задачи
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {matrices.map((m) => (
-              <div
-                key={m.id}
-                className="rounded-3xl p-6 flex flex-col transition-all hover:-translate-y-1"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(167,139,250,0.12)",
-                }}
-              >
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-lg"
-                  style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
-                >
-                  <Icon name={m.icon as "Gem" | "Heart" | "Sparkles"} size={26} className="text-white" />
-                </div>
-                <h3 className="text-white font-bold text-lg font-display mb-2">{m.title}</h3>
-                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "rgba(196,181,253,0.5)" }}>
-                  {m.desc}
-                </p>
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full"
-                    style={{
-                      background: "rgba(255,255,255,0.06)",
-                      color: "rgba(196,181,253,0.5)",
-                    }}
-                  >
-                    <Icon name="Clock" size={11} />
-                    {m.badge}
-                  </span>
-                  <span className="text-right">
-                    {promoApplied && (
-                      <span className="block text-xs line-through" style={{ color: "rgba(196,181,253,0.35)" }}>
-                        {m.price}
-                      </span>
-                    )}
-                    <span
-                      className="text-lg font-black"
-                      style={{
-                        background: `linear-gradient(135deg, ${m.from}, ${m.to})`,
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                      }}
-                    >
-                      {getPrice(m.price)}
-                    </span>
-                  </span>
-                </div>
-                <button
-                  className="w-full py-2.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
-                  style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
-                  onClick={() => {
-                    const msg = formatMessage(m.title, getPrice(m.price), "—", "Нужна дата рождения (уточним в чате)", "Матрица судьбы");
-                    setModal({ title: "✅ Заявка на матрицу!", message: msg });
-                    notifyAdmin(msg);
-                  }}
-                >
-                  <Icon name="CalendarCheck" size={16} />
-                  Записаться
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <p
-            className="text-center text-xs mt-6 flex items-center justify-center gap-1.5"
-            style={{ color: "rgba(167,139,250,0.35)" }}
-          >
-            <Icon name="Lock" size={11} />
-            Для расчёта нужна дата рождения. Все данные конфиденциальны.
-          </p>
-        </div>
-      </section>
-
       {/* SOS */}
       <section className="py-14 px-5">
         <div className="max-w-4xl mx-auto">
@@ -997,6 +900,103 @@ export default function Index() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* МАТРИЦА СУДЬБЫ */}
+      <section className="py-14 px-5">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3"
+              style={{
+                background: "rgba(251,191,36,0.1)",
+                border: "1px solid rgba(251,191,36,0.2)",
+                color: "#fcd34d",
+              }}
+            >
+              🔮 Нумерология
+            </div>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white">
+              Матрица судьбы
+            </h2>
+            <p className="mt-2 text-sm" style={{ color: "rgba(196,181,253,0.5)" }}>
+              22 аркана раскроют ваши таланты, ресурсы и задачи
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {matrices.map((m) => (
+              <div
+                key={m.id}
+                className="rounded-3xl p-6 flex flex-col transition-all hover:-translate-y-1"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(167,139,250,0.12)",
+                }}
+              >
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-lg"
+                  style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
+                >
+                  <Icon name={m.icon as "Gem" | "Heart" | "Sparkles"} size={26} className="text-white" />
+                </div>
+                <h3 className="text-white font-bold text-lg font-display mb-2">{m.title}</h3>
+                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "rgba(196,181,253,0.5)" }}>
+                  {m.desc}
+                </p>
+                <div className="flex items-center justify-between mb-4">
+                  <span
+                    className="inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full"
+                    style={{
+                      background: "rgba(255,255,255,0.06)",
+                      color: "rgba(196,181,253,0.5)",
+                    }}
+                  >
+                    <Icon name="Clock" size={11} />
+                    {m.badge}
+                  </span>
+                  <span className="text-right">
+                    {promoApplied && (
+                      <span className="block text-xs line-through" style={{ color: "rgba(196,181,253,0.35)" }}>
+                        {m.price}
+                      </span>
+                    )}
+                    <span
+                      className="text-lg font-black"
+                      style={{
+                        background: `linear-gradient(135deg, ${m.from}, ${m.to})`,
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      {getPrice(m.price)}
+                    </span>
+                  </span>
+                </div>
+                <button
+                  className="w-full py-2.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
+                  onClick={() => {
+                    const msg = formatMessage(m.title, getPrice(m.price), "—", "Нужна дата рождения (уточним в чате)", "Матрица судьбы");
+                    setModal({ title: "✅ Заявка на матрицу!", message: msg });
+                    notifyAdmin(msg);
+                  }}
+                >
+                  <Icon name="CalendarCheck" size={16} />
+                  Записаться
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <p
+            className="text-center text-xs mt-6 flex items-center justify-center gap-1.5"
+            style={{ color: "rgba(167,139,250,0.35)" }}
+          >
+            <Icon name="Lock" size={11} />
+            Для расчёта нужна дата рождения. Все данные конфиденциальны.
+          </p>
         </div>
       </section>
 
