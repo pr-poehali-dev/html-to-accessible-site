@@ -1019,7 +1019,7 @@ export default function Index() {
             <div className="flex-1">
               <h3 className="text-white font-bold text-xl font-display mb-1">Secrets</h3>
               <p className="text-sm mb-3" style={{ color: "rgba(196,181,253,0.5)" }}>
-                Короткий персональный разбор — быстро и по делу.
+                Короткий персональный разбор. Мах 5 вопросов
               </p>
               <span
                 className="text-2xl font-black"
