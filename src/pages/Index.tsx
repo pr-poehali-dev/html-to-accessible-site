@@ -1021,15 +1021,22 @@ export default function Index() {
               <p className="text-sm mb-3" style={{ color: "rgba(196,181,253,0.5)" }}>
                 Короткий персональный разбор. Мах 5 вопросов
               </p>
-              <span
-                className="text-2xl font-black"
-                style={{
-                  background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                {getPrice("350 ₽")}
+              <span className="inline-flex items-baseline gap-2">
+                {promoApplied && (
+                  <span className="text-sm line-through" style={{ color: "rgba(196,181,253,0.35)" }}>
+                    350 ₽
+                  </span>
+                )}
+                <span
+                  className="text-2xl font-black"
+                  style={{
+                    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  {getPrice("350 ₽")}
+                </span>
               </span>
             </div>
             <button
