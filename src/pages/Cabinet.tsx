@@ -121,15 +121,31 @@ export default function Cabinet() {
   return (
     <div className="min-h-screen flex items-center justify-center px-5 py-16" style={{ background: "#09041a" }}>
       <div
-        className="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl opacity-30 pointer-events-none"
+        className="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl opacity-30 pointer-events-none animate-blob"
         style={{ background: "radial-gradient(circle, #7c3aed, transparent)" }}
       />
       <div
-        className="absolute top-10 right-0 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none"
-        style={{ background: "radial-gradient(circle, #ec4899, transparent)" }}
+        className="absolute top-10 right-0 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+        style={{ background: "radial-gradient(circle, #ec4899, transparent)", animationDelay: "3s" }}
+      />
+      <div
+        className="absolute top-1/4 left-10 w-56 h-56 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+        style={{ background: "radial-gradient(circle, #38bdf8, transparent)", animationDelay: "1.5s" }}
+      />
+      <div
+        className="absolute top-1/3 right-16 w-60 h-60 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+        style={{ background: "radial-gradient(circle, #f97316, transparent)", animationDelay: "4.5s" }}
+      />
+      <div
+        className="absolute bottom-20 left-1/4 w-52 h-52 rounded-full blur-3xl opacity-15 pointer-events-none animate-blob"
+        style={{ background: "radial-gradient(circle, #a855f7, transparent)", animationDelay: "6s" }}
+      />
+      <div
+        className="absolute bottom-10 right-1/4 w-48 h-48 rounded-full blur-3xl opacity-15 pointer-events-none animate-blob"
+        style={{ background: "radial-gradient(circle, #ec4899, transparent)", animationDelay: "8s" }}
       />
 
-      <div className="relative w-full max-w-md">
+      <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <a href="/" className="inline-flex items-center gap-1 text-xs mb-4" style={{ color: "rgba(196,181,253,0.5)" }}>
             <Icon name="ArrowLeft" size={14} />
