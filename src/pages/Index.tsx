@@ -289,7 +289,7 @@ export default function Index() {
     sos: { request: "", phone: "" },
   });
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
-  const [reviewForm, setReviewForm] = useState({ name: "", service: "", text: "", rating: 5 });
+  const [reviewForm, setReviewForm] = useState({ name: "", service: "", text: "", rating: 5, anonymous: false });
   const [activeNav, setActiveNav] = useState("consult");
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -334,7 +334,7 @@ export default function Index() {
       date: new Date().toLocaleDateString("ru-RU", { month: "long", year: "numeric" }),
     };
     setReviews((prev) => [newReview, ...prev]);
-    setReviewForm({ name: "", service: "", text: "", rating: 5 });
+    setReviewForm({ name: "", service: "", text: "", rating: 5, anonymous: false });
     showToast("✨ Спасибо за отзыв!");
   };
 
@@ -1126,12 +1126,30 @@ export default function Index() {
                 </label>
                 <input
                   type="text"
-                  className="w-full rounded-2xl px-4 py-3 text-sm outline-none"
+                  disabled={reviewForm.anonymous}
+                  className="w-full rounded-2xl px-4 py-3 text-sm outline-none disabled:opacity-50"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(167,139,250,0.2)", color: "#e9d5ff" }}
                   placeholder="Как вас зовут?"
                   value={reviewForm.name}
                   onChange={(e) => setReviewForm((p) => ({ ...p, name: e.target.value }))}
                 />
+                <label className="flex items-center gap-2 mt-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded accent-pink-500"
+                    checked={reviewForm.anonymous}
+                    onChange={(e) =>
+                      setReviewForm((p) => ({
+                        ...p,
+                        anonymous: e.target.checked,
+                        name: e.target.checked ? "Аноним" : "",
+                      }))
+                    }
+                  />
+                  <span className="text-xs" style={{ color: "rgba(196,181,253,0.5)" }}>
+                    Хочу сохранить анонимность
+                  </span>
+                </label>
               </div>
               <div>
                 <label className="block text-xs font-medium mb-1.5" style={{ color: "rgba(196,181,253,0.5)" }}>
