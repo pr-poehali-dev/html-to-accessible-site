@@ -92,14 +92,16 @@ export default {
 				},
 				'blob': {
 					'0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
-					'33%': { transform: 'translate(30px, -40px) scale(1.15)' },
-					'66%': { transform: 'translate(-20px, 20px) scale(0.9)' }
+					'20%': { transform: 'translate(80px, -60px) scale(1.25)' },
+					'40%': { transform: 'translate(-60px, 40px) scale(0.85)' },
+					'60%': { transform: 'translate(60px, 80px) scale(1.1)' },
+					'80%': { transform: 'translate(-80px, -40px) scale(0.95)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'blob': 'blob 9s infinite ease-in-out'
+				'blob': 'blob 12s infinite ease-in-out'
 			}
 		}
 	},
