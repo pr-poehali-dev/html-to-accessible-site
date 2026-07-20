@@ -452,8 +452,28 @@ export default function Index() {
           className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
           style={{ background: "radial-gradient(circle, #38bdf8, transparent)", animationDelay: "6s" }}
         />
+        <div
+          className="absolute top-1/4 left-10 w-56 h-56 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+          style={{ background: "radial-gradient(circle, #f97316, transparent)", animationDelay: "1.5s" }}
+        />
+        <div
+          className="absolute top-1/3 right-10 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+          style={{ background: "radial-gradient(circle, #a855f7, transparent)", animationDelay: "4.5s" }}
+        />
+        <div
+          className="absolute top-2/3 left-1/4 w-48 h-48 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+          style={{ background: "radial-gradient(circle, #ec4899, transparent)", animationDelay: "8s" }}
+        />
+        <div
+          className="absolute top-1/2 right-1/4 w-52 h-52 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+          style={{ background: "radial-gradient(circle, #38bdf8, transparent)", animationDelay: "2.5s" }}
+        />
+        <div
+          className="absolute bottom-10 right-1/3 w-60 h-60 rounded-full blur-3xl opacity-15 pointer-events-none animate-blob"
+          style={{ background: "radial-gradient(circle, #7c3aed, transparent)", animationDelay: "10s" }}
+        />
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center">
             <div className="w-full">
               <div
