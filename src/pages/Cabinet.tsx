@@ -142,16 +142,29 @@ export default function Cabinet() {
             <Icon name="Star" size={30} className="text-white" />
           </div>
           <h1 className="font-display text-3xl font-bold text-white">Личный кабинет</h1>
-          <p className="mt-2 text-sm" style={{ color: "rgba(196,181,253,0.5)" }}>
+          <p className="mt-2 text-sm animate-pulse" style={{ color: "rgba(196,181,253,0.5)" }}>
             Копите звёзды и получайте бесплатные визиты
           </p>
         </div>
 
         {!token || !profile ? (
-          <div
-            className="rounded-3xl p-7"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.15)" }}
-          >
+          <div className="relative">
+            <div
+              className="absolute -top-16 -left-16 w-56 h-56 rounded-full blur-3xl opacity-40 pointer-events-none animate-blob"
+              style={{ background: "radial-gradient(circle, #7c3aed, transparent)" }}
+            />
+            <div
+              className="absolute -bottom-16 -right-10 w-56 h-56 rounded-full blur-3xl opacity-40 pointer-events-none animate-blob"
+              style={{ background: "radial-gradient(circle, #ec4899, transparent)", animationDelay: "3s" }}
+            />
+            <div
+              className="absolute top-1/2 -right-16 w-40 h-40 rounded-full blur-3xl opacity-30 pointer-events-none animate-blob"
+              style={{ background: "radial-gradient(circle, #38bdf8, transparent)", animationDelay: "6s" }}
+            />
+            <div
+              className="relative rounded-3xl p-7"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.15)" }}
+            >
             <div className="flex rounded-2xl overflow-hidden mb-5" style={{ background: "rgba(255,255,255,0.05)" }}>
               <button
                 onClick={() => setMode("login")}
@@ -273,6 +286,7 @@ export default function Cabinet() {
                 <Icon name={mode === "login" ? "LogIn" : "UserPlus"} size={16} />
                 {loading ? "Подождите..." : mode === "login" ? "Войти" : "Создать аккаунт"}
               </button>
+            </div>
             </div>
           </div>
         ) : (
