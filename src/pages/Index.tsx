@@ -293,14 +293,33 @@ export default function Index() {
   const [activeNav, setActiveNav] = useState("consult");
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
+  const [bestiApplied, setBestiApplied] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [comboPhone, setComboPhone] = useState("");
 
   const PROMO_CODE = "HAPPY15";
   const PROMO_DISCOUNT = 0.15;
+  const BESTI_CODE = "BESTI";
+  const BESTI_DISCOUNT = 0.2;
 
   const applyPromo = () => {
-    if (promoCode.trim().toUpperCase() === PROMO_CODE) {
+    const code = promoCode.trim().toUpperCase();
+    if (code === PROMO_CODE) {
       setPromoApplied(true);
+      setBestiApplied(false);
+      setSelectedIds([]);
       showToast("🎉 Промокод активирован! Скидка 15%");
+      confetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.6 },
+        colors: ["#7c3aed", "#ec4899", "#f59e0b", "#38bdf8"],
+      });
+    } else if (code === BESTI_CODE) {
+      setBestiApplied(true);
+      setPromoApplied(false);
+      setSelectedIds([]);
+      showToast("🎉 Промокод BESTI активирован! Выберите 2 раздела — скидка 20% на сумму");
       confetti({
         particleCount: 120,
         spread: 90,
@@ -309,6 +328,7 @@ export default function Index() {
       });
     } else {
       setPromoApplied(false);
+      setBestiApplied(false);
       showToast("❌ Промокод не найден");
     }
   };
@@ -318,6 +338,19 @@ export default function Index() {
     const num = parseInt(priceStr.replace(/\D/g, ""), 10);
     const discounted = Math.round(num * (1 - PROMO_DISCOUNT));
     return `${discounted.toLocaleString("ru-RU")} ₽`;
+  };
+
+  const parsePrice = (priceStr: string) => parseInt(priceStr.replace(/\D/g, ""), 10);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 2) {
+        showToast("❗ Можно выбрать максимум 2 раздела");
+        return prev;
+      }
+      return [...prev, id];
+    });
   };
 
   const handleReviewSubmit = () => {
@@ -401,6 +434,44 @@ export default function Index() {
       to: "#f43f5e",
     },
   ];
+
+  const allOfferings: { id: string; title: string; price: string; type: string }[] = [
+    { id: "primary", title: "Первичная консультация", price: "900 ₽", type: "Консультация" },
+    { id: "full", title: "Полноценная консультация", price: "1 500 ₽", type: "Консультация" },
+    { id: "sos", title: "SOS-консультация 30 минут", price: "700 ₽", type: "SOS срочная поддержка" },
+    { id: "m1", title: "Матрица судьбы + карта здоровья", price: "1 400 ₽", type: "Матрица судьбы" },
+    { id: "m2", title: "Матрица совместимости", price: "1 850 ₽", type: "Матрица судьбы" },
+    { id: "m3", title: "Детская матрица + карта здоровья", price: "1 200 ₽", type: "Матрица судьбы" },
+  ];
+
+  const getOffering = (id: string) => allOfferings.find((o) => o.id === id);
+
+  const comboTotal = selectedIds.reduce((sum, id) => sum + (parsePrice(getOffering(id)?.price || "0") || 0), 0);
+  const comboDiscounted = Math.round(comboTotal * (1 - BESTI_DISCOUNT));
+
+  const handleComboSubmit = () => {
+    if (selectedIds.length !== 2) {
+      showToast("❗ Выберите ровно 2 раздела для комбо BESTI");
+      return;
+    }
+    if (!comboPhone.trim()) {
+      showToast("❌ Укажите телефон для связи");
+      return;
+    }
+    const items = selectedIds.map((id) => getOffering(id));
+    const servicesText = items.map((i) => `${i?.title} (${i?.price})`).join(" + ");
+    const msg = formatMessage(
+      servicesText,
+      `${comboDiscounted.toLocaleString("ru-RU")} ₽ (промокод BESTI, -20%)`,
+      comboPhone,
+      "Комбо-заявка на 2 раздела",
+      "Комбо BESTI"
+    );
+    setModal({ title: "✅ Комбо-заявка готова!", message: msg });
+    notifyAdmin(msg);
+    setSelectedIds([]);
+    setComboPhone("");
+  };
 
   const matrices = [
     {
@@ -687,7 +758,93 @@ export default function Index() {
                 Скидка 15% применена ко всем ценам
               </p>
             )}
+            {bestiApplied && (
+              <p className="text-xs mt-2 text-green-400 flex items-center gap-1">
+                <Icon name="CheckCheck" size={12} />
+                Промокод для двоих: выберите любые 2 раздела ниже — скидка 20% на сумму
+              </p>
+            )}
           </div>
+
+          {bestiApplied && (
+            <div
+              className="rounded-3xl p-6 mt-4"
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(74,222,128,0.3)",
+              }}
+            >
+              <h4 className="text-white font-bold text-sm mb-3 flex items-center gap-2">
+                <Icon name="Users2" size={16} className="text-green-400" />
+                Комбо BESTI · выбрано {selectedIds.length}/2
+              </h4>
+              {selectedIds.length === 0 ? (
+                <p className="text-xs" style={{ color: "rgba(196,181,253,0.5)" }}>
+                  Отметьте ✓ на карточках консультаций, SOS или матриц — тут появится итоговая сумма со скидкой 20%.
+                </p>
+              ) : (
+                <div className="space-y-2 mb-4">
+                  {selectedIds.map((id) => {
+                    const o = getOffering(id);
+                    return (
+                      <div key={id} className="flex items-center justify-between text-sm">
+                        <span style={{ color: "#e9d5ff" }}>{o?.title}</span>
+                        <span style={{ color: "rgba(196,181,253,0.6)" }}>{o?.price}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {selectedIds.length === 2 && (
+                <>
+                  <div
+                    className="flex items-center justify-between text-sm mb-1 pt-3"
+                    style={{ borderTop: "1px solid rgba(167,139,250,0.15)" }}
+                  >
+                    <span style={{ color: "rgba(196,181,253,0.5)" }}>Сумма без скидки</span>
+                    <span className="line-through" style={{ color: "rgba(196,181,253,0.35)" }}>
+                      {comboTotal.toLocaleString("ru-RU")} ₽
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm font-semibold" style={{ color: "#e9d5ff" }}>
+                      Итого со скидкой 20%
+                    </span>
+                    <span
+                      className="text-2xl font-black"
+                      style={{
+                        background: "linear-gradient(135deg, #4ade80, #22c55e)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      {comboDiscounted.toLocaleString("ru-RU")} ₽
+                    </span>
+                  </div>
+                  <input
+                    type="tel"
+                    className="w-full rounded-2xl px-4 py-3 text-sm outline-none mb-3"
+                    style={{
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1px solid rgba(74,222,128,0.3)",
+                      color: "#e9d5ff",
+                    }}
+                    placeholder="+7 ___ ___ __ __"
+                    value={comboPhone}
+                    onChange={(e) => setComboPhone(e.target.value)}
+                  />
+                  <button
+                    className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    style={{ background: "linear-gradient(135deg, #4ade80, #22c55e)" }}
+                    onClick={handleComboSubmit}
+                  >
+                    <Icon name="CalendarCheck" size={16} />
+                    Записать двоих
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
@@ -717,12 +874,27 @@ export default function Index() {
             {consultations.map((c) => (
               <div
                 key={c.id}
-                className="rounded-3xl p-7 transition-all hover:-translate-y-1"
+                className="rounded-3xl p-7 transition-all hover:-translate-y-1 relative"
                 style={{
                   background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(167,139,250,0.15)",
+                  border: selectedIds.includes(c.id)
+                    ? "1px solid rgba(74,222,128,0.5)"
+                    : "1px solid rgba(167,139,250,0.15)",
                 }}
               >
+                {bestiApplied && (
+                  <button
+                    onClick={() => toggleSelect(c.id)}
+                    className="absolute top-5 right-5 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+                    style={{
+                      background: selectedIds.includes(c.id) ? "linear-gradient(135deg, #4ade80, #22c55e)" : "rgba(255,255,255,0.08)",
+                      border: "1px solid rgba(74,222,128,0.4)",
+                    }}
+                    title="Выбрать для комбо BESTI"
+                  >
+                    {selectedIds.includes(c.id) && <Icon name="Check" size={16} className="text-white" />}
+                  </button>
+                )}
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div
@@ -817,13 +989,28 @@ export default function Index() {
             className="rounded-3xl p-8 md:p-12 relative overflow-hidden"
             style={{
               background: "linear-gradient(135deg, #1a0533 0%, #3b0764 50%, #450a0a 100%)",
-              border: "1px solid rgba(249,115,22,0.25)",
+              border: selectedIds.includes("sos")
+                ? "1px solid rgba(74,222,128,0.6)"
+                : "1px solid rgba(249,115,22,0.25)",
             }}
           >
             <div
               className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-30 pointer-events-none"
               style={{ background: "radial-gradient(circle, #dc2626, transparent)" }}
             />
+            {bestiApplied && (
+              <button
+                onClick={() => toggleSelect("sos")}
+                className="absolute top-5 right-5 z-20 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+                style={{
+                  background: selectedIds.includes("sos") ? "linear-gradient(135deg, #4ade80, #22c55e)" : "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(74,222,128,0.4)",
+                }}
+                title="Выбрать для комбо BESTI"
+              >
+                {selectedIds.includes("sos") && <Icon name="Check" size={16} className="text-white" />}
+              </button>
+            )}
             <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start">
               <div className="flex-1">
                 <div
@@ -965,12 +1152,27 @@ export default function Index() {
             {matrices.map((m) => (
               <div
                 key={m.id}
-                className="rounded-3xl p-6 flex flex-col transition-all hover:-translate-y-1"
+                className="rounded-3xl p-6 flex flex-col transition-all hover:-translate-y-1 relative"
                 style={{
                   background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(167,139,250,0.12)",
+                  border: selectedIds.includes(m.id)
+                    ? "1px solid rgba(74,222,128,0.5)"
+                    : "1px solid rgba(167,139,250,0.12)",
                 }}
               >
+                {bestiApplied && (
+                  <button
+                    onClick={() => toggleSelect(m.id)}
+                    className="absolute top-5 right-5 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+                    style={{
+                      background: selectedIds.includes(m.id) ? "linear-gradient(135deg, #4ade80, #22c55e)" : "rgba(255,255,255,0.08)",
+                      border: "1px solid rgba(74,222,128,0.4)",
+                    }}
+                    title="Выбрать для комбо BESTI"
+                  >
+                    {selectedIds.includes(m.id) && <Icon name="Check" size={16} className="text-white" />}
+                  </button>
+                )}
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-lg"
                   style={{ background: `linear-gradient(135deg, ${m.from}, ${m.to})` }}
