@@ -5,10 +5,21 @@ import Icon from "@/components/ui/icon";
 interface Review {
   id: number;
   name: string;
+  service: string;
   text: string;
   rating: number;
   date: string;
 }
+
+const SERVICE_OPTIONS = [
+  "Первичная консультация",
+  "Полноценная консультация",
+  "Матрица судьбы + карта здоровья",
+  "Матрица совместимости",
+  "Детская матрица + карта здоровья",
+  "Экстренная поддержка",
+  "🧿 Secrets",
+];
 
 const INITIAL_REVIEWS: Review[] = [];
 
@@ -278,7 +289,7 @@ export default function Index() {
     sos: { request: "", phone: "" },
   });
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
-  const [reviewForm, setReviewForm] = useState({ name: "", text: "", rating: 5 });
+  const [reviewForm, setReviewForm] = useState({ name: "", service: "", text: "", rating: 5 });
   const [activeNav, setActiveNav] = useState("consult");
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -317,12 +328,13 @@ export default function Index() {
     const newReview: Review = {
       id: Date.now(),
       name: reviewForm.name.trim(),
+      service: reviewForm.service,
       text: reviewForm.text.trim(),
       rating: reviewForm.rating,
       date: new Date().toLocaleDateString("ru-RU", { month: "long", year: "numeric" }),
     };
     setReviews((prev) => [newReview, ...prev]);
-    setReviewForm({ name: "", text: "", rating: 5 });
+    setReviewForm({ name: "", service: "", text: "", rating: 5 });
     showToast("✨ Спасибо за отзыв!");
   };
 
@@ -1080,7 +1092,10 @@ export default function Index() {
                       </div>
                       <div>
                         <p className="text-white font-semibold text-sm">{r.name}</p>
-                        <p className="text-xs" style={{ color: "rgba(196,181,253,0.35)" }}>{r.date}</p>
+                        <p className="text-xs" style={{ color: "rgba(196,181,253,0.35)" }}>
+                          {r.date}
+                          {r.service && ` · ${r.service}`}
+                        </p>
                       </div>
                     </div>
                     <div className="flex gap-0.5 flex-shrink-0">
@@ -1117,6 +1132,26 @@ export default function Index() {
                   value={reviewForm.name}
                   onChange={(e) => setReviewForm((p) => ({ ...p, name: e.target.value }))}
                 />
+              </div>
+              <div>
+                <label className="block text-xs font-medium mb-1.5" style={{ color: "rgba(196,181,253,0.5)" }}>
+                  Какую услугу посетили
+                </label>
+                <select
+                  className="w-full rounded-2xl px-4 py-3 text-sm outline-none"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(167,139,250,0.2)", color: "#e9d5ff" }}
+                  value={reviewForm.service}
+                  onChange={(e) => setReviewForm((p) => ({ ...p, service: e.target.value }))}
+                >
+                  <option value="" style={{ background: "#1e0a3c" }}>
+                    Не указано
+                  </option>
+                  {SERVICE_OPTIONS.map((s) => (
+                    <option key={s} value={s} style={{ background: "#1e0a3c" }}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div>
                 <label className="block text-xs font-medium mb-2" style={{ color: "rgba(196,181,253,0.5)" }}>
