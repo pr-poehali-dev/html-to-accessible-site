@@ -441,12 +441,16 @@ export default function Index() {
       <section className="relative overflow-hidden py-16 md:py-24 px-5">
         {/* Glow blobs */}
         <div
-          className="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl opacity-30 pointer-events-none"
+          className="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl opacity-30 pointer-events-none animate-blob"
           style={{ background: "radial-gradient(circle, #7c3aed, transparent)" }}
         />
         <div
-          className="absolute top-10 right-0 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #ec4899, transparent)" }}
+          className="absolute top-10 right-0 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+          style={{ background: "radial-gradient(circle, #ec4899, transparent)", animationDelay: "3s" }}
+        />
+        <div
+          className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full blur-3xl opacity-20 pointer-events-none animate-blob"
+          style={{ background: "radial-gradient(circle, #38bdf8, transparent)", animationDelay: "6s" }}
         />
 
         <div className="max-w-3xl mx-auto">
