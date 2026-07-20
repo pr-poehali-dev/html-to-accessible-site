@@ -1000,6 +1000,54 @@ export default function Index() {
         </div>
       </section>
 
+      {/* SECRETS */}
+      <section className="py-14 px-5">
+        <div className="max-w-2xl mx-auto">
+          <div
+            className="rounded-3xl p-8 flex flex-col md:flex-row items-center gap-6 text-center md:text-left"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(167,139,250,0.12)",
+            }}
+          >
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg"
+              style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}
+            >
+              🧿
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-bold text-xl font-display mb-1">Secrets</h3>
+              <p className="text-sm mb-3" style={{ color: "rgba(196,181,253,0.5)" }}>
+                Короткий персональный разбор — быстро и по делу.
+              </p>
+              <span
+                className="text-2xl font-black"
+                style={{
+                  background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                {getPrice("350 ₽")}
+              </span>
+            </div>
+            <button
+              className="w-full md:w-auto px-6 py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] flex-shrink-0"
+              style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}
+              onClick={() => {
+                const msg = formatMessage("🧿 Secrets", getPrice("350 ₽"), "—", "Нужны детали (уточним в чате)", "Secrets");
+                setModal({ title: "✅ Заявка на Secrets!", message: msg });
+                notifyAdmin(msg);
+              }}
+            >
+              <Icon name="CalendarCheck" size={16} />
+              Записаться
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* ОТЗЫВЫ */}
       <section id="reviews" className="py-14 px-5">
         <div className="max-w-4xl mx-auto">
