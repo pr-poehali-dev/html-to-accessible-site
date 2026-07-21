@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import Icon from "@/components/ui/icon";
 
@@ -10,6 +10,8 @@ interface Review {
   rating: number;
   date: string;
 }
+
+const REVIEWS_URL = "https://functions.poehali.dev/e1034502-f864-4dfd-8b07-abab2cb5f723";
 
 const SERVICE_OPTIONS = [
   "Первичная консультация",
@@ -290,6 +292,16 @@ export default function Index() {
   });
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
   const [reviewForm, setReviewForm] = useState({ name: "", service: "", text: "", rating: 5, anonymous: false });
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+
+  useEffect(() => {
+    fetch(REVIEWS_URL)
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data.reviews)) setReviews(data.reviews);
+      })
+      .catch(() => {});
+  }, []);
   const [activeNav, setActiveNav] = useState("consult");
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -358,17 +370,30 @@ export default function Index() {
       showToast("❌ Заполните имя и текст отзыва");
       return;
     }
-    const newReview: Review = {
-      id: Date.now(),
-      name: reviewForm.name.trim(),
-      service: reviewForm.service,
-      text: reviewForm.text.trim(),
-      rating: reviewForm.rating,
-      date: new Date().toLocaleDateString("ru-RU", { month: "long", year: "numeric" }),
-    };
-    setReviews((prev) => [newReview, ...prev]);
-    setReviewForm({ name: "", service: "", text: "", rating: 5, anonymous: false });
-    showToast("✨ Спасибо за отзыв!");
+    setReviewSubmitting(true);
+    fetch(REVIEWS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: reviewForm.name.trim(),
+        service: reviewForm.service,
+        text: reviewForm.text.trim(),
+        rating: reviewForm.rating,
+      }),
+    })
+      .then((r) => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      })
+      .then((newReview: Review) => {
+        setReviews((prev) => [newReview, ...prev]);
+        setReviewForm({ name: "", service: "", text: "", rating: 5, anonymous: false });
+        showToast("✨ Спасибо за отзыв!");
+      })
+      .catch(() => {
+        showToast("❌ Не удалось отправить отзыв, попробуйте ещё раз");
+      })
+      .finally(() => setReviewSubmitting(false));
   };
 
   const scrollTo = (id: string) => {
@@ -1428,12 +1453,13 @@ export default function Index() {
                 />
               </div>
               <button
-                className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full py-3 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
                 style={{ background: "linear-gradient(135deg, #ec4899, #7c3aed)" }}
                 onClick={handleReviewSubmit}
+                disabled={reviewSubmitting}
               >
-                <Icon name="Send" size={16} />
-                Отправить отзыв
+                <Icon name={reviewSubmitting ? "Loader2" : "Send"} size={16} className={reviewSubmitting ? "animate-spin" : ""} />
+                {reviewSubmitting ? "Отправка..." : "Отправить отзыв"}
               </button>
             </div>
           </div>

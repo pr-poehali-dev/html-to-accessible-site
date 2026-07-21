@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "Получить список отзывов",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "OPTIONS запрос",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}
